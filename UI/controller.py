@@ -49,3 +49,25 @@ class Controller:
     """Implementare la parte di ricerca del cammino minimo"""
     # TODO
 
+    def handle_cammino_minimo(self, e):
+        self._view.lista_visualizzazione_3.controls.clear()
+
+        grafo = self._model.G
+
+        if grafo.number_of_edges() == 0 and grafo.number_of_nodes() == 0:
+            self._view.show_alert("Creare prima il grafo.")
+            return
+
+        if len(self._view.txt_soglia.value) == 0:
+            self._view.show_alert("Inserire un valore per la soglia prima di calcolare il cammino minimo.")
+            return
+
+        soglia = float(self._view.txt_soglia.value)
+        result = self._model.cammino_minimo(soglia)
+
+        self._view.lista_visualizzazione_3.controls.append(ft.Text("Cammino minimo:"))
+        for i in range(len(result)-1):
+            if result[i] != result[-1]:
+                self._view.lista_visualizzazione_3.controls.append(ft.Text(f"{result[i]} --> {result[i+1]} [peso: {grafo[result[i]][result[i+1]]['weight']}]"))
+
+        self._view.page.update()
